@@ -14,6 +14,7 @@ const appDescription = p("Lorem ipsum dolor sit amet, consectetur adipiscing eli
 
 console.log(appTitle.outerHTML);
 console.log(appDescription.outerHTML);
+console.log("Success");
 
 const appTitleNode = document.getElementById('appTitle');
 const appDescriptionNode = document.getElementById('appDescription')
