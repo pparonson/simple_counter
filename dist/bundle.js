@@ -77,24 +77,67 @@ module.exports = __webpack_require__(1);
 "use strict";
 
 
-var h = __webpack_require__(2);
+var _hyperscript = __webpack_require__(2);
 
-var _require = __webpack_require__(7)(h),
-    div = _require.div,
-    span = _require.span,
-    h1 = _require.h1,
-    p = _require.p;
+var _hyperscript2 = _interopRequireDefault(_hyperscript);
 
-var appTitle = h1("Basic Minimal Webpack Config for New APP");
-var appDescription = p("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do" + " eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad" + " minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex" + " ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate" + " velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat" + " cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id" + " est laborum.");
+var _hyperscriptHelpers = __webpack_require__(7);
 
-console.log(appTitle.outerHTML);
-console.log(appDescription.outerHTML);
-console.log("Success!");
-var appTitleNode = document.getElementById('appTitle');
-var appDescriptionNode = document.getElementById('appDescription');
-appTitleNode.appendChild(appTitle);
-appDescriptionNode.appendChild(appDescription);
+var _hyperscriptHelpers2 = _interopRequireDefault(_hyperscriptHelpers);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// const h = require('hyperscript')
+// const { div, span, h1, p } = require('hyperscript-helpers')(h);
+var _hh = (0, _hyperscriptHelpers2.default)(_hyperscript2.default),
+    div = _hh.div,
+    button = _hh.button;
+
+// functions:
+// view
+// update model
+
+
+var initModel = 0;
+
+// dipatch fn is passed as first param to view fn to make it avail in scope to
+// onclick event handler
+function createView(_dispatch, _model) {
+  // pass array of child nodes to be returned by div node
+  return div([div({ className: "mv2" }, "Count: " + _model), button({ className: "pv1 ph2 mr2", onclick: console.log("Hello") }, "+"), button({ className: "pv1 ph2", onclick: console.log("world") }, "-")]);
+}
+
+function updateModel(_msg, _model) {
+  if (_msg === "inc") {
+    return _model + 1;
+  }
+  if (_msg === "dec") {
+    return _model - 1;
+  }
+  return _model;
+}
+
+// WARNING: impure code below
+function app(_model, _update, _view, _node) {
+  var model = _model;
+  var currentView = _view(dispatch, model);
+  _node.appendChild(currentView);
+
+  function dispatch(_msg) {
+    // update model state
+    model = _update(_msg, model);
+    var updatedView = _view(dispatch, model);
+    _node.replaceChild(updatedView, currentView);
+
+    // update view state
+    currentView = updatedView;
+  }
+}
+
+var rootNode = document.getElementById("app");
+// rootNode.appendChild(createView(updateModel("", initModel)));
+
+app(initModel, updateModel, createView, rootNode);
 
 /***/ }),
 /* 2 */

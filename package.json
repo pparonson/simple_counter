@@ -4,7 +4,7 @@
   "description": "Simple Counter App",
   "scripts": {
     "build": "yarn cache clean && webpack",
-    "start": "webpack-dev-server"
+    "start": "webpack-dev-server --open"
   },
   "main": "index.js",
   "license": "MIT",
