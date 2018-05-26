@@ -87,27 +87,27 @@ var _hyperscriptHelpers2 = _interopRequireDefault(_hyperscriptHelpers);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// const h = require('hyperscript')
-// const { div, span, h1, p } = require('hyperscript-helpers')(h);
 var _hh = (0, _hyperscriptHelpers2.default)(_hyperscript2.default),
     div = _hh.div,
     button = _hh.button;
-
-// functions:
-// view
-// update model
+// const el = document.createElement("p");
+// const str = "Hello test";
+// const node = document.getElementById('app');
+// el.innerHTML = str;
+// node.appendChild(el);
 
 
 var initModel = 0;
 
-// dipatch fn is passed as first param to view fn to make it avail in scope to
-// onclick event handler
-function createView(_dispatch, _model) {
-  // pass array of child nodes to be returned by div node
-  return div([div({ className: "mv2" }, "Count: " + _model), button({ className: "pv1 ph2 mr2", onclick: console.log("Hello") }, "+"), button({ className: "pv1 ph2", onclick: console.log("world") }, "-")]);
+function view(_dispatch, _model) {
+  return div({ className: "ma3" }, [div({ className: "pa2" }, "Count: " + _model), button({ className: "pv1 ph2 mr2", onclick: function onclick() {
+      return _dispatch("inc");
+    } }, "+"), button({ className: "pv1 ph2", onclick: function onclick() {
+      return _dispatch("dec");
+    } }, "-")]);
 }
 
-function updateModel(_msg, _model) {
+function update(_msg, _model) {
   if (_msg === "inc") {
     return _model + 1;
   }
@@ -117,27 +117,24 @@ function updateModel(_msg, _model) {
   return _model;
 }
 
-// WARNING: impure code below
-function app(_model, _update, _view, _node) {
+// WARNING: impure code and side-effects
+function app(_model, _view, _update, _node) {
   var model = _model;
   var currentView = _view(dispatch, model);
   _node.appendChild(currentView);
 
+  // the dispatch fn will handle updates to the app model
   function dispatch(_msg) {
-    // update model state
     model = _update(_msg, model);
     var updatedView = _view(dispatch, model);
     _node.replaceChild(updatedView, currentView);
-
-    // update view state
     currentView = updatedView;
   }
 }
 
 var rootNode = document.getElementById("app");
-// rootNode.appendChild(createView(updateModel("", initModel)));
-
-app(initModel, updateModel, createView, rootNode);
+// rootNode.appendChild(view(update("inc", initModel)));
+app(initModel, view, update, rootNode);
 
 /***/ }),
 /* 2 */
